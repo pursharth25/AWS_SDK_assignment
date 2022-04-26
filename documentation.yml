@@ -11,6 +11,45 @@ app.py:
 def index():
     return render_template('index.html')
 
+#createbucket
+
+@app.route('/createbucket')
+def add():
+    return render_template('add.html',var='createbucket')
+
+
+#create bucket success page
+
+@app.route('/createbucket/success', methods=['POST'])
+def function1():
+    if request.method=='POST':
+        bucket_name=request.form['name']
+        location="us-east-2"
+    return s3Bucket.createbucket(bucket_name, location)
+
+#list all buckets
+
+@app.route('/listallbuckets')
+def function2():
+    bucketlist=[]
+    bucketlist=s3Bucket.listallbuckets()
+    return render_template('view.html',buckets=bucketlist,var='list')
+
+#upload files
+
+@app.route('/uploadfile')
+def functionupload():
+    return render_template('add.html',var='upload')
+
+#upload file success page
+
+@app.route('/uploadfile/success', methods=['POST'])
+def function6():
+    f = request.files['file']
+    f.save(os.path.join(UPLOAD_FOLDER, f.filename))
+    name=request.form['name']
+    return s3Bucket.uploadfile(f"uploads/{f.filename}", name)
+    
 # list ec2 instances
 
 @app.route('/list')

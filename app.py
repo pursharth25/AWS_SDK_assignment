@@ -1,16 +1,49 @@
-from crypt import methods
 import os
-import math
 import boto3
+import s3Bucket
 from botocore.exceptions import ClientError
 from flask import Flask, redirect,render_template,request, url_for
 app = Flask(__name__)
+UPLOAD_FOLDER = "uploads"
+BUCKET = "pursharth"
 
 # Front Page
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/createbucket')
+def add():
+    return render_template('add.html',var='createbucket')
+
+
+
+@app.route('/createbucket/success', methods=['POST'])
+def function1():
+    if request.method=='POST':
+        bucket_name=request.form['name']
+        location="us-east-2"
+    return s3Bucket.createbucket(bucket_name, location)
+
+
+@app.route('/listallbuckets')
+def function2():
+    bucketlist=[]
+    bucketlist=s3Bucket.listallbuckets()
+    return render_template('view.html',buckets=bucketlist,var='list')
+
+@app.route('/uploadfile')
+def functionupload():
+    return render_template('add.html',var='upload')
+
+@app.route('/uploadfile/success', methods=['POST'])
+def function6():
+    f = request.files['file']
+    f.save(os.path.join(UPLOAD_FOLDER, f.filename))
+    name=request.form['name']
+    return s3Bucket.uploadfile(f"uploads/{f.filename}", name)
+    
 
 
 # list ec2 instances
@@ -112,6 +145,10 @@ def stop_instances():
         return render_template("stop.html")
 
 
+
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
+
+
