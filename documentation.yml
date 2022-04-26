@@ -156,9 +156,8 @@ sudo docker build -t awsimage1 .
 
 Now create container out of it and remember to pass access key and security key as env var i.e -
 
-sudo docker run --name awscontainer2 -p 6009:6000 -e AWS_ACCESS_KEY_ID=AKIA5DRQKNCAEXKFXC6K 
--e AWS_SECRET_ACCESS_KEY=JV3S/KyTKYsfuUbq1sj13c9x7iVHKlukDsRlw836 
--e AWS_DEFAULT_REGION=us-east-1 awsimage1
+sudo docker run --name awscontainer2 -p 6009:6000 -e AWS_ACCESS_KEY_ID=<your access ID> 
+-e AWS_SECRET_ACCESS_KEY=<your secret access key> -e AWS_DEFAULT_REGION=us-east-1 awsimage1
 
 Now it will run.
 
