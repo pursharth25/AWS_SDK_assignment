@@ -1,0 +1,22 @@
+<div class="container-fluid mt-5">
+    <table border="3">
+        <thead>
+            <th>Id</th>
+            <th>Platform</th>
+            <th>Type</th>
+            <th>IPv4</th>
+            <th>AMI</th>
+            <th>State</th>
+        </thead>
+        {%for instance in instances:%}
+          <tr>
+              <td>{{instance.id}}</td>
+              <td>{{instance.platform}}</td>
+              <td>{{instance.instance_type}}</td>
+              <td>{{instance.public_ip_address}}</td>
+              <td>{{instance.image.id}}</td>
+              <td>{{instance.state['Name']}}</td>
+          </tr>
+          {%endfor%}
+    </table>
+    </div>

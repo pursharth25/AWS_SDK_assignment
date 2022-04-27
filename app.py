@@ -48,13 +48,29 @@ def function6():
 
 # list ec2 instances
 
+# @app.route('/list')
+# def get_instances():
+#  @app.route('/list')
+#  def get_instances():
+#      ec2 = boto3.resource('ec2',region_name='us-east-1')
+#      instances= ec2.instances.all()
+#      if not(instances):
+#          return render_template("confirmationPage.html",message="No Instances are there")
+         
+#      return response
+
 @app.route('/list')
 def get_instances():
-    ec2 = boto3.client('ec2',region_name='us-east-1')
-    response = ec2.describe_instances() 
-    return response
+    ec2 = boto3.resource('ec2',region_name='us-east-1')
+    instances= ec2.instances.all()
+    if not(instances):
+     return render_template("confirmationPage.html",message="Zero instances running")
 
-#  creating ec2 instance
+    return render_template("listec2.html",instances=instances)
+
+
+  
+#creating ec2 instance
 
 @app.route('/create',methods=["POST","GET"])
 def create_instances():
